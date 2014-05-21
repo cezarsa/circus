@@ -53,7 +53,11 @@ class CircusSocket(socket.socket):
 
         self.interface = interface
         self.backlog = backlog
-        self.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        try:
+            self.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+        except socket.error:
+            # see 699
+            pass
 
     @property
     def location(self):
